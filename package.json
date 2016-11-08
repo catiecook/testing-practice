@@ -1,0 +1,27 @@
+{
+  "name": "testing-practice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/catiecook/testing-practice.git"
+  },
+  "author": "Catie Cook",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/catiecook/testing-practice/issues"
+  },
+  "homepage": "https://github.com/catiecook/testing-practice#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2"
+  },
+  "dependencies": {
+    "express": "^4.14.0",
+    "supertest": "^2.0.1"
+  }
+}
