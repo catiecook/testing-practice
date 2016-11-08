@@ -67,11 +67,95 @@ describe('sending a GET to /', () => {
 
 - go to expressjs.org for all the options for render/req/next etc.
 
-- in app.js, set up the basic route to test
+_app.js, set up the basic route to test_
 ```javascript
   app.get('/', (req, res, next) => {
     res.sendFile('index.html', {root: __dirname + '/public'}, (err) =>{
       if(err) return next(err) //if there is an error, pass it to next
     })
   })
+```
+
+- to make things more modular, make a routes folder
+`mkdir routes`
+`touch routes/web.js`
+
+_in app.js_
+    ```javascript
+    const express = require('express')
+    const webRoutes = require('./routes/web.js')
+    const app = express()
+
+    app.use('/', webRoutes) //this is telling the server to look int webRoutes aka web.js in this case
+
+    module.exports = app
+    ```
+_in web.js_
+  ```javascript
+  const express = require('express')
+  const router = express.Router()
+
+
+  router.get('/', (req, res, next) => {
+    res.sendFile('index.html', {root: __dirname + '/../public'}, (err) =>{
+      if(err) return next(err) //if there is an error, pass it to next
+    })
+  })
+
+  module.exports = router
+  ```
+
+###Run a server AND also be able to run tests   
+  `mkdir bin`
+  `touch bin/www` - we made this file so that when we do the testing, it doesn't try to automatically run the server when you run a server
+      so if we run `npm start` it runs a server and not the tests
+  _in bin_
+    ```javascript
+    const app = require('../app');
+
+    app.listen(3000);
+    ```
+
+##Testing API
+- the set up is the same as the route testing, so follow that for basic set up
+_in food-spec.js_
+- after the `.expect(200)`
+
+  ```javascript
+  .end(err, res) => {
+    if(err) return done(err)
+
+    const iceCreams = [
+      {
+        name: "Raisin",
+        ingredients: ['milk', 'sugar', 'cream', 'raisons'],
+        brand: 'Sweet Cow'
+      },
+      {
+        name: 'Chunky Monkey',
+        ingredients: ['milk', 'eggs', 'sugar', 'banana', 'chocolate chips'],
+        brand: 'Ben and Jerry\'s'
+      }
+    ];
+
+    res.body.should.br.deep.equal(iceCreams);
+  }
+  ```
+  in app.js make sure to add a new app.get route
+  _app.js_
+  ```javascript
+  const express = require('express')
+  const webRoutes = require('./routes/web.js')
+  const iceCreamModel = require('./models/ice-creams.js')
+  const app = express()
+
+  app.use('/', webRoutes)
+
+  app.get('/api/ice-creams', (req, res, next) => {
+    iceCream.getAll()
+      .then(result) => {
+        res.json(result)
+      }
+  })
+  module.exports = app
 ```

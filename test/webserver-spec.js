@@ -19,7 +19,7 @@ describe('sending a GET to /', () => {
 
           res.text.should.be.equal(indexFile) //the first item in the string should be an open tag for html
 
-          done();
+          done()
         })
     })
   })
